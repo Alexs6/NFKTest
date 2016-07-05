@@ -10,7 +10,7 @@ app.config(['$httpProvider', function ($httpProvider) {
 app.controller('vendorCtrl', function ($scope, $http) {
     $scope.VendorModel = {};
     $scope.VendorTotalModel = {};
-   
+
     $scope.VendorDataSource = {
         transport: {
             read: {
@@ -21,17 +21,22 @@ app.controller('vendorCtrl', function ($scope, $http) {
         }
     };
     $scope.vendorChanged = function () {
-        $http.post('/Vendor/GetVendorTotal', {
-            vendorId: this.value()
-        })
-           .success(function (response) {
-               if (response.Status == "Error") {
-                   toastr.error(response.Message);
-               } else {
-                   $scope.VendorTotalModel = response;
-               }
+        if (this.value() && this.selectedIndex == -1) {                 
+            toastr.error('Указанный поставщик не найден!');
+            $scope.VendorTotalModel = {};
+        } else {
+            $http.post('/Vendor/GetVendorTotal', {
+                vendorId: this.value()
+            })
+               .success(function (response) {
+                   if (response.Status == "Error") {
+                       toastr.error(response.Message);
+                   } else {
+                       $scope.VendorTotalModel = response;
+                   }
 
-           });
+               });
+        }
     };
     $scope.VendorOptions = {
         optionLabel: " ",
@@ -39,9 +44,9 @@ app.controller('vendorCtrl', function ($scope, $http) {
         dataTextField: "Name",
         dataValueField: "Id",
         filter: 'contains',
-        placeholder:"Начните вводить ИНН",
+        placeholder: "Начните вводить ИНН",
         change: $scope.vendorChanged
     };
-    
+
 });
 
