@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div ng-app="vendorApp" ng-controller="vendorCtrl as vendor">
+    <div class="col-xs-12">
+        <div class="row">
+            <input id="Vendor" name="Vendor" ng-model="VendorModel.VendorId" kendo-combo-box k-options="VendorOptions" style="width: 300px" />
+        </div>
+    </div>
+    <div class="col-xs-12 top10">
+        <div class="row">
+            <ul ng-repeat="model in VendorTotalModel">
+                <li>
+                    Кол-во: {{model.Quantity}}, Сумма в валюте {{model.Currency}}: {{model.Total}}
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+@Scripts.Render("~/bundles/jsVendorApp")
